@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import NotificationItem from './NotificationItem';
-import Notifications from './Notifications';
 import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react';
 
