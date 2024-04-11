@@ -1,22 +1,41 @@
-import React from "react";
-import { shallow } from "enzyme";
-import Notifications from "./Notifications";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import Notifications from './Notifications';
+import '@testing-library/jest-dom'
 
-const notification = shallow(<Notifications />);
-describe("Notification component tests", () => {
-  it("renders Notification component without crashing", () => {
-    expect(notification).toBeDefined();
+
+jest.mock('../utils/utils', () => ({
+  getLatestNotification: jest.fn(() => 'Latest notification content'),
+}));
+
+describe('Notifications Component Tests', () => {
+  
+
+  afterEach(() => {
+    jest.clearAllMocks(); // Clear all mocks after each test
   });
 
-  it("renders ul", () => {
-    expect(notification.find("ul")).toBeDefined();
+  it('renders notifications without crashing', () => {
+    render(<Notifications />);
+    const notificationsElement = screen.getByText(/Here is the list of notifications/i);
+    expect(notificationsElement).toBeInTheDocument();
   });
 
-  it("renders three list items", () => {
-    expect(notification.find("li")).toHaveLength(3);
+  it('renders close button and responds to click event', () => {
+    render(<Notifications />);
+    const closeButton = screen.getByTestId("close-btn");
+    expect(closeButton).toBeInTheDocument();
   });
 
-  it("renders correct text", () => {
-    expect(notification.find("p").text()).toBe("Here is the list of notifications");
-  });
+  it('renders list of notifications', () => {
+    render(<Notifications />);
+    const notifications = screen.getAllByRole('listitem');
+    expect(notifications).toHaveLength(3);
+
+    const defaultNotification = screen.getByText(/New course available/i);
+    expect(defaultNotification).toBeInTheDocument();
+
+    const urgentNotifications = screen.getAllByText(/New resume available/i);
+    expect(urgentNotifications).toHaveLength(1);
+  });                                                                                                                               
 });

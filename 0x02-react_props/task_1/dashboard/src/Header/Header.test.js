@@ -1,14 +1,29 @@
 import React from "react";
+import { render, screen } from "@testing-library/react";
+import '@testing-library/jest-dom'
 import Header from "./Header";
-import { shallow } from "enzyme";
+import logo from "../assets/holberton-logo.jpeg";
 
-const wrapper = shallow(<Header />);
-describe("Header component tests", () => {
-  it("render without crashing", () => {
-    expect(wrapper.exists()).toEqual(true);
+describe("Header Component Tests", () => {
+  it("renders header without crashing", () => {
+    render(<Header />);
+    const headerElement = screen.getByTestId("app-header");
+
+    expect(headerElement).toBeInTheDocument();
   });
-  it("should render a h1", () => {
-    expect(wrapper.exists("img")).toEqual(true);
-    expect(wrapper.containsMatchingElement(<h1>School dashboard</h1>)).toEqual(true);
+
+  it("renders logo image", () => {
+    render(<Header />);
+    const logoElement = screen.getByAltText("logo");
+
+    expect(logoElement).toBeInTheDocument();
+    expect(logoElement.src).toContain(logo);
+  });
+
+  it("renders title 'School dashboard'", () => {
+    render(<Header />);
+    const titleElement = screen.getByText("School dashboard");
+
+    expect(titleElement).toBeInTheDocument();
   });
 });

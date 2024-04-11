@@ -8,13 +8,11 @@ import "./App.css";
 function App() {
   return (
     <React.Fragment>
-      <div data-testid="app">
-        <Notifications />
-        <div className="App">
-          <Header />
-          <Login />
-          <Footer />
-        </div>
+      <Notifications />
+      <div className="App">
+        <Header />
+        <Login />
+        <Footer />
       </div>
     </React.Fragment>
   );

@@ -1,26 +1,34 @@
 import React from "react";
+import { render, screen } from "@testing-library/react";
+import '@testing-library/jest-dom'
 import App from "./App";
-import Login from "../Login/Login";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import Notifications from "../Notifications/Notifications";
-import { shallow } from "enzyme";
 
-const component = shallow(<App />);
-describe("App tests", () => {
-  it("renders without crashing", () => {
-    expect(component).toBeDefined();
+describe("App Component Tests", () => {
+  it("Renders without crashing", () => {
+    render(<App />);
+    const appElement = screen.getByTestId("app");
+
+    expect(appElement).toBeInTheDocument();
   });
-  it("should render Notifications component", () => {
-    expect(component.contains(<Notifications />)).toBe(true);
+
+  it("renders a div with the class App-header", () => {
+    render(<App />);
+    const headerElement = screen.getByTestId("app-header");
+
+    expect(headerElement).toBeInTheDocument();
   });
-  it("should render Header component", () => {
-    expect(component.contains(<Header />)).toBe(true);
+
+  it("renders a div with the class App-body", () => {
+    render(<App />);
+    const bodyElement = screen.getByTestId("app-body");
+
+    expect(bodyElement).toBeInTheDocument();
   });
-  it("should render Login Component", () => {
-    expect(component.contains(<Login />)).toBe(true);
-  });
-  it("should render Footer component", () => {
-    expect(component.contains(<Footer />)).toBe(true);
+
+  it("renders a div with the class App-footer", () => {
+    render(<App />);
+    const footerElement = screen.getByTestId("app-footer");
+
+    expect(footerElement).toBeInTheDocument();
   });
 });
