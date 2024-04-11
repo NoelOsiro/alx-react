@@ -15,7 +15,7 @@ function Notifications() {
       <img src={closeBtn} alt="X" />
       </button>
       <ul>
-      	<li data="default">New course available</li>
+      	<li data="default" >New course available</li>
       	<li data="urgent">New resume available</li>
       	<li data="urgent" dangerouslySetInnerHTML={{ __html: getLatestNotification() }}></li>
       </ul>
