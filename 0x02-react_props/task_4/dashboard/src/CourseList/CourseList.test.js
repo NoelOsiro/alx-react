@@ -1,23 +1,16 @@
-import React from "react";
-import CourseLIst from "./CourseLIst";
-import CourseListRow from "./CourseListRow";
-import { shallow } from "enzyme";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import CourseList from './CourseList';
+import '@testing-library/jest-dom'
 
-const wrapper = shallow(<CourseLIst />);
-describe("CourseLIst component tests", () => {
-  it("should render without crashing", () => {
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it("renders 5 different rows", () => {
-    expect(wrapper.find("thead").children()).toHaveLength(2);
-    wrapper.find("thead").forEach((node) => {
-      expect(node.equals(<CourseListRow textFirstCell="Foo" />));
+describe('CourseList Component Tests', () => {
+    it('renders CourseList component without crashing', () => {
+        render(<CourseList />);
     });
 
-    expect(wrapper.find("tbody").children()).toHaveLength(3);
-    wrapper.find("tbody").forEach((node) => {
-      expect(node.equals(<CourseListRow textFirstCell="Foo" />));
+    it('renders the 5 different rows', () => {
+        render(<CourseList />);
+        const rows = screen.getAllByRole('row');
+        expect(rows.length).toBe(5); // 2 header rows + 3 data rows
     });
-  });
 });

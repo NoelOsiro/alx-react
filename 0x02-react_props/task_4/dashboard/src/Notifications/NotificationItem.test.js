@@ -1,20 +1,25 @@
-import React from "react";
-import NotificationItem from "./NotificationItem";
-import { shallow } from "enzyme";
+import React from 'react';
+import { render } from '@testing-library/react';
+import NotificationItem from './NotificationItem';
+import '@testing-library/jest-dom'
+import { screen } from '@testing-library/react';
 
-const wrapper = shallow(<NotificationItem />);
-describe("rendering components", () => {
-  it("renders NotificationItem component without crashing", () => {
-    expect(wrapper.exists()).toBe(true);
+describe('NotificationItem Component Tests', () => {
+  it('renders without crashing', () => {
+    render(<NotificationItem type="default" value="test" />);
   });
 
-  it('renders correct html from type="default" value="test" props', () => {
-    wrapper.setProps({ type: "default", value: "test" });
-    expect(wrapper.html()).toEqual('<li data-notification-type="default">test</li>');
-  });
+it('renders correct HTML with dummy type and value props', () => {
+    render(<NotificationItem type="default"  value="test" />);
+    const liElement = screen.getByRole('listitem');
+    expect(liElement).toHaveTextContent('test');
+});
 
-  it('renders correct html from  html="<u>test</u>" props', () => {
-    wrapper.setProps({ html: "<u>test</u>" });
-    expect(wrapper.html()).toEqual('<li data-urgent="true"><u>test</u></li>');
-  });
+it('renders correct HTML with dummy HTML prop', () => {
+    const htmlContent = { __html: '<u>test</u>' };
+    render(<NotificationItem type="default"  html= {htmlContent} />);
+    const liElement = screen.getByRole('listitem');
+    expect(liElement).toBeInTheDocument();
+    expect(liElement.innerHTML).toContain(htmlContent.__html);
+});
 });

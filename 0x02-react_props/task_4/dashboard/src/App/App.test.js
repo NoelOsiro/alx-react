@@ -1,36 +1,57 @@
 import React from "react";
+import { render, screen } from "@testing-library/react";
+import '@testing-library/jest-dom'
 import App from "./App";
-import Login from "../Login/Login";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import Notifications from "../Notifications/Notifications";
-import { shallow } from "enzyme";
-import CourseList from "../CourseList/CourseList";
 
-const component = shallow(<App />);
-describe("App tests", () => {
-  it("renders without crashing", () => {
-    expect(component).toBeDefined();
+describe("App Component Tests", () => {
+  it("Renders without crashing", () => {
+    render(<App />);
+    const appElement = screen.getByTestId("app");
+
+    expect(appElement).toBeInTheDocument();
   });
-  it("should render Notifications component", () => {
-    expect(component.contains(<Notifications />)).toBe(true);
+
+  it("renders a div with the class App-header", () => {
+    render(<App />);
+    const headerElement = screen.getByTestId("app-header");
+
+    expect(headerElement).toBeInTheDocument();
   });
-  it("should render Header component", () => {
-    expect(component.contains(<Header />)).toBe(true);
+
+  it("renders a div with the class App-body", () => {
+    render(<App />);
+    const bodyElement = screen.getByTestId("app-body");
+
+    expect(bodyElement).toBeInTheDocument();
   });
-  it("should render Login Component", () => {
-    expect(component.contains(<Login />)).toBe(false);
+
+  it("renders a div with the class App-footer", () => {
+    render(<App />);
+    const footerElement = screen.getByTestId("app-footer");
+
+    expect(footerElement).toBeInTheDocument();
   });
-  it("should render Footer component", () => {
-    expect(component.contains(<Footer />)).toBe(true);
+
+  it("does not render CourseList when isLoggedIn is false", () => {
+    render(<App isLoggedIn={false} />);
+    const courseListElement = screen.queryByTestId("course-list");
+
+    expect(courseListElement).not.toBeInTheDocument();
   });
-  it("does not render courselist if logged out", () => {
-    component.setProps({ isLoggedIn: false });
-    expect(component.contains(<CourseList />)).toBe(true);
-  });
-  it("renders courselist if logged in", () => {
-    const component = shallow(<App isLoggedIn={true} />);
-    expect(component.contains(<CourseList />)).toBe(true);
-    expect(component.contains(<Login />)).toBe(false);
+
+  describe("when isLoggedIn is true", () => {
+    it("does not include Login component", () => {
+      render(<App isLoggedIn={true} />);
+      const loginElement = screen.queryByTestId("login");
+
+      expect(loginElement).not.toBeInTheDocument();
+    });
+
+    it("includes CourseList component", () => {
+      render(<App isLoggedIn={true} />);
+      const courseListElement = screen.getByTestId("course-list");
+
+      expect(courseListElement).toBeInTheDocument();
+    });
   });
 });
